@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <span class="navbar-brand">Dashboard Admin - Manajemen Data</span>
+      <button id="logoutBtn" class="btn btn-outline-light btn-sm">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- Konten Utama -->
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5>Selamat datang, <span id="usernameDisplay"></span> (<span class="badge bg-primary">Admin</span>)</h5>
+            <p class="mb-0">Daftar lengkap data pendaftar beasiswa 2025.</p>
+        </div>
+        <div class="card-body">
+            <h6><i class="bi bi-table"></i> Tabel Data Pendaftar</h6>
+            <div class="table-responsive">
+                <table id="uploadsTable" class="table table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Tanggal Daftar</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                          <td>Rafiqi Muhammad</td>
+                          <td>rafiqi@example.com</td>
+                          <td>20 Oktober 2025</td>
+                          <td><span class="badge bg-success">Lolos</span></td>
+                          <td>
+                            <button class="btn btn-info btn-sm lihat-detail" data-nama="Rafiqi Muhammad" data-email="rafiqi@example.com" data-status="Lolos">
+                              <i class="bi bi-eye"></i> Detail
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Abdul Rasyid</td>
+                          <td>abdul@example.com</td>
+                          <td>19 Oktober 2025</td>
+                          <td><span class="badge bg-warning text-dark">Proses</span></td>
+                          <td>
+                            <button class="btn btn-info btn-sm lihat-detail" data-nama="Nurul Aisyah" data-email="nurulaisyah@example.com" data-status="Proses">
+                              <i class="bi bi-eye"></i> Detail
+                            </button>
+                          </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Modal Detail Pendaftar -->
+  <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="detailModalLabel">Detail Pendaftar</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Nama:</strong> <span id="detailNama"></span></p>
+          <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+          <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+          <p><strong>File Dokumen:</strong> <a href="#" id="detailFile" target="_blank">Lihat File</a></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#uploadsTable').DataTable();
+
+      // Tampilkan modal detail
+      $('.lihat-detail').click(function () {
+        const nama = $(this).data('nama');
+        const email = $(this).data('email');
+        const status = $(this).data('status');
+
+        $('#detailNama').text(nama);
+        $('#detailEmail').text(email);
+        $('#detailStatus').text(status);
+        $('#detailFile').attr('href', '#'); // ganti sesuai data backend nanti
+
+        $('#detailModal').modal('show');
+      });
+
+      // Konfirmasi logout
+      $('#logoutBtn').click(function () {
+        const confirmLogout = confirm("Apakah Anda yakin ingin keluar?");
+        if (confirmLogout) {
+          window.location.href = "login.html";
+        }
+      });
+    });
+
+      // Logout: hapus session + redirect
+      $("#logoutBtn").click(function () {
+        const confirmLogout = confirm("Apakah Anda yakin ingin keluar?");
+        if (confirmLogout) {
+          sessionStorage.removeItem("sessionUser");
+          window.location.href = "login.html";
+        }
+      });
+  </script>
+</body>
+</html>
